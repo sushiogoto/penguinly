@@ -1,5 +1,5 @@
 {
-  "name": "shortly-penguinly",
+  "name": "penguinly",
   "version": "0.0.0",
   "description": "",
   "main": "app.js",
@@ -32,13 +32,11 @@
     "express": "^4.4.5",
     "jwt-simple": "^0.2.0",
     "knex": "^0.9.0",
-    "mongoose": "^4.1.0",
     "morgan": "^1.1.1",
-    "mysql": "^2.9.0",
     "passport": "^0.2.0",
     "passport-local": "^1.0.0",
+    "pg": "^4.4.3",
     "q": "^1.0.1",
-    "request": "^2.36.0",
-    "sqlite3": "^3.1.1"
+    "request": "^2.36.0"
   }
 }
