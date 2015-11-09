@@ -1,0 +1,16 @@
+<div id='signup'>
+  <h1>signup</h1>
+  <form name="signupForm" ng-submit='signup()'>
+  <!-- see if user exists -->
+    <input type='text' ng-model='user.username'>
+    <input type="password" ng-model='user.password'>
+    <button>signup</button>
+  </form>
+  <a href="#/signin">Already have an account? <strong>Signin</strong> ...</a>
+
+  <md-button class="md-raised">Button</md-button>
+
+  <div ng-show="errorBool" >
+    {{ errorMessage }}
+  </div>
+</div>
