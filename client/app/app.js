@@ -71,7 +71,6 @@ angular.module('penguinly', [
       var jwt = $window.localStorage.getItem('com.penguinly');
       if (jwt) {
         object.headers['x-access-token'] = jwt;
-      debugger;
       }
       object.headers['Allow-Control-Allow-Origin'] = '*';
       return object;

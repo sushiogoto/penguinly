@@ -105,7 +105,10 @@ app.post('/signin', function (req, res) {
         user.comparePassword(password, function (match) {
           if (match) {
             var token = jwt.encode(user, 'secret');
-            res.json({token: token});
+            res.json({
+              token: token,
+              user: user.attributes.username
+            });
           } else {
             return next(new Error('No user'));
           }
@@ -132,7 +135,10 @@ app.post('/signup', function (req, res) {
         newUser.save()
           .then(function (newUser) {
             var token = jwt.encode(user, 'secret');
-            res.json({token: token});
+            res.json({
+              token: token,
+              user: user.attributes.username
+            });
           })
           .fail(function (error) {
             next(error);
