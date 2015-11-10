@@ -9,6 +9,14 @@ angular.module('penguinly.groups', [])
     $scope.groupName = "";
   };
 
+  $scope.joinGroup = function () {
+    Groups.joinGroup({
+      name: $scope.joinGroupName,
+      user: $window.localStorage.getItem('currentUser')
+    });
+    $scope.joinGroupName = "";
+  };
+
   $scope.signout = function () {
     Auth.signout();
   };

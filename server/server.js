@@ -103,6 +103,32 @@ app.post('/groups', function (req, res, next) {
 
 });
 
+app.post('/groups/join', function (req, res, next) {
+  var groupName = req.body.name;
+  var username = req.body.user;
+
+  console.log(groupName);
+
+  new User({ 'username': username })
+    .fetch()
+    .then(function (user) {
+      new Group({ 'name': groupName })
+        .fetch()
+        .then(function (group) {
+          if (group) {
+            user.set('group_id', group.id);
+            user.save();
+            // TODO!! Redirect to that group's page
+            res.sendStatus(201);
+          } else {
+            // TODO!!! Change these to redirects to group page
+            res.sendStatus(404);
+          }
+      });
+    });
+
+});
+
 app.post('/signin', function (req, res, next) {
   var username = req.body.username;
   var password = req.body.password;

@@ -12,8 +12,20 @@ angular.module('penguinly.services', [])
     });
   };
 
+  var joinGroup = function (group) {
+    return $http({
+      method: 'POST',
+      url: '/groups/join',
+      data: group
+    })
+    .then(function (res) {
+      return res;
+    });
+  };
+
   return {
-    createGroup: createGroup
+    createGroup: createGroup,
+    joinGroup: joinGroup
   };
 })
 

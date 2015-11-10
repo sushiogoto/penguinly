@@ -10,6 +10,12 @@
         <input name="groupName" ng-model="groupName" type="text">
       </form>
     </md-input-container>
+    <md-input-container class="md-icon-float md-block">
+      <form name="joinGroupInput" ng-submit='joinGroup()'>
+        <label>Join a group</label>
+        <input name="joinGroupName" ng-model="joinGroupName" type="text">
+      </form>
+    </md-input-container>
     <md-list>
       <md-subheader class="md-no-sticky">Groups</md-subheader>
       <md-list-item class="md-3-line">
