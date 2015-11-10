@@ -67,7 +67,7 @@ angular.module('penguinly.services', [])
     console.log('GETTING');
     return $http({
       method: 'GET',
-      url: '/api/activities?group_id=' + groupId,
+      url: '/api/activities?group_id=' + groupId
     })
     .then(function (res) {
       return res.data;

@@ -6,6 +6,7 @@ angular.module('penguinly', [
     'penguinly.navbar',
     'penguinly.newActivity',
     'penguinly.activities',
+    'penguinly.activityPage',
     'ngRoute',
     'ngMaterial',
     'ui.router',
@@ -80,6 +81,18 @@ angular.module('penguinly', [
           controller: 'ActivitiesCtrl'
         },
         'navbar@activities': {
+          templateUrl: 'app/nav/navbar.html'
+        }
+      }
+    })
+    .state('activity', {
+      url: '/activity/:id',
+      views: {
+        '': {
+          templateUrl: 'app/activities/activity.html',
+          controller: 'ActivityPageCtrl'
+        },
+        'navbar@activity': {
           templateUrl: 'app/nav/navbar.html'
         }
       }

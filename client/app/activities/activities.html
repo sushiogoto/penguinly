@@ -1,5 +1,10 @@
 <div id="activities">
-  <md-content>
-    <div ng-repeat="activity in data.activities">{{ activity.title }}</div>
-  </md-content>
+  <md-list>
+    <md-subheader class="md-no-sticky"><h1>Activities</h1></md-subheader>
+    <md-list-item ng-repeat="activity in data.activities">
+      <div class="md-list-item-text" layout="column" ui-sref="activity({id: id, group_id: group_id})">
+        <h3>{{ activity.title }}</h3>
+      </div>
+    </md-list-item>
+  </md-list>
 </div>

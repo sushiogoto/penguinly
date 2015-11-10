@@ -2,19 +2,18 @@
   <div ui-view="navbar"></div>
     <div layout="row" layout-align="center center">
       <md-content>
-        <md-subheader class="md-no-sticky"><h1>{{ data.group.name }}</h1></md-subheader>
+        <h1>{{ data.group.name }}</h1>
+        <md-button class="md-raised md-primary" ui-sref='newactivity({id: groupId})'>Add activity</md-button>
       </md-content>
-      <md-button class="md-raised md-primary" ui-sref='newactivity({id: groupId})'>Add activity</md-button>
     </div>
   <div class="user">
     <div layout="row" layout-margin>
-      <md-content flex="50" flex-offset="10">
+      <md-content flex="45" flex-offset="20">
         <div ui-view="activities"></div>
       </md-content>
       <md-content flex="20">
-
-
         <md-list>
+          <md-subheader class="md-no-sticky"><h1>Members</h1></md-subheader>
           <md-list-item ng-repeat="user in data.users">
           <img src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAYAAAAAJDA0NmNmYjM3LTkwOWUtNDdkMy04YWQxLTVjN2U4ZDI1NjZlMA.jpg" class="md-avatar" alt="{{ user.username }}">
             <div class="md-list-item-text" layout="column">
