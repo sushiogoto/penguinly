@@ -1,3 +1,7 @@
 <div id="groups">
   <div ui-view="navbar"></div>
+
+  {{ data.group.name }}
+
+  <div class="user" ng-repeat="user in data.users">{{ user.username }}</div>
 </div>

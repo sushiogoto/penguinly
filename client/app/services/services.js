@@ -23,9 +23,32 @@ angular.module('penguinly.services', [])
     });
   };
 
+  var getGroup = function (group) {
+    return $http({
+      method: 'GET',
+      url: '/groups?id=' + group
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
+  var getUsers = function (groupId) {
+    console.log('getting');
+    return $http({
+      method: 'GET',
+      url: '/api/users?id=' + groupId
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
   return {
     createGroup: createGroup,
-    joinGroup: joinGroup
+    joinGroup: joinGroup,
+    getGroup: getGroup,
+    getUsers: getUsers
   };
 })
 

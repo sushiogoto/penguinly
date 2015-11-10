@@ -1,6 +1,7 @@
 var express = require('express');
 var bodyParser = require('body-parser');
 var util = require('../lib/utility');
+var url = require('url');
 
 var db = require('./config');
 var session = require('express-session');
@@ -92,7 +93,11 @@ app.post('/groups', function (req, res, next) {
                   user.save();
                 }
                 // TODO!! Redirect to that group's page
-                res.sendStatus(201);
+                // res.sendStatus(201);
+                res.json({
+                  name: newGroup.name,
+                  id: newGroup.id
+                })
               });
           } else {
             // TODO!!! Change these to redirects to group page
@@ -102,6 +107,54 @@ app.post('/groups', function (req, res, next) {
     });
 
 });
+
+app.get('/api/users', function (req, res, next) {
+  var urlParts = url.parse(req.url, true);
+  var query = urlParts.query;
+  var groupId = query.id;
+  console.log(groupId);
+  console.log("GOTTTTTTTTT");
+
+  User
+    .query('where', 'group_id', '=', groupId)
+    .fetchAll({
+      withRelated: ['group'],
+      columns: ['id', 'username'],
+      debug: true
+    }).then(function(users) {
+      res.json(users);
+    }).catch(function(error) {
+      console.error(error);
+    });
+})
+
+app.get('/groups', function (req, res, next) {
+  // new User().query({where: {group_id: groupId}}).then(function(users) {
+  //    // postComments should now be a collection where each is loaded with related user & post
+  //    console.log(JSON.stringify(users));
+  // });
+
+  var urlParts = url.parse(req.url, true);
+  var query = urlParts.query;
+  var groupId = query.id;
+
+  new Group({ 'id': groupId })
+    .fetch()
+    .then(function (group) {
+      if (group) {
+        res.json(group.attributes);
+      } else {
+        res.sendStatus(404);
+      }
+    })
+});
+
+// app.get('/groups/users', function (req, res, next) {
+//   new Groups().fetch({withRelated: ['user', 'post']}).then(function(postComments) {
+//      // postComments should now be a collection where each is loaded with related user & post
+//      console.log(JSON.stringify(postComments));
+//   });
+// })
 
 app.post('/groups/join', function (req, res, next) {
   var groupName = req.body.name;

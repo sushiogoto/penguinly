@@ -38,6 +38,11 @@ angular.module('penguinly', [
       url: '/signup',
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthCtrl'
+    })
+    .state('group', {
+      url: '/group/:id',
+      templateUrl: 'app/groups/group.html',
+      controller: 'GroupPageCtrl'
     });
     // .state('signout', {
     //   url: '/signout',
