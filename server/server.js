@@ -69,7 +69,20 @@ app.use(session({
 //       });
 //   }
 // };
+app.post('/api/activities', function (req, res, next) {
+  console.log(req.body);
+  var newActivity = new Activity({ 
+    'title': req.body.title,
+    'date_time': req.body.datetime,
+    'description': req.body.description,
+    'group_id': req.body.group_id
+  });
 
+  newActivity.save()
+    .then(function (activity) {
+    res.json(activity);
+  })
+})
 app.post('/groups', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;

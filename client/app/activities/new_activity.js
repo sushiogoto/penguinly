@@ -1,8 +1,9 @@
-angular.module('penguinly.newActivity', ['ngMessages'])
-  .controller('NewActivityCtrl', function ($scope, $state, $stateParams) {
+angular.module('penguinly.newActivity', [])
+  .controller('NewActivityCtrl', function ($scope, $state, $stateParams, Activities) {
     $scope.activity = {};
+    $scope.activity.group_id = $stateParams.id;
     $scope.newActivity = function () {
       console.log($scope.activity);
-      debugger;
+      Activities.addActivity($scope.activity);
     };
   });

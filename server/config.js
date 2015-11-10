@@ -47,7 +47,8 @@ db.knex.schema.hasTable('activities').then(function (exists) {
   if (!exists) {
     db.knex.schema.createTable('activities', function (activity) {
       activity.increments('id').primary();
-      activity.string('title', 255);
+      activity.string('title', 30);
+      activity.string('description', 255);
       activity.integer('group_id').references('groups.id');
       activity.dateTime('date_time');
     }).then(function (table) {

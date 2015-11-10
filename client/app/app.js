@@ -56,7 +56,7 @@ angular.module('penguinly', [
       }
     })
     .state('newactivity', {
-      url: '/activity/create',
+      url: '/activity/create?:id',
       views: {
         '': {
           templateUrl: 'app/activities/new_activity.html',

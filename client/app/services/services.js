@@ -51,6 +51,23 @@ angular.module('penguinly.services', [])
   };
 })
 
+.factory('Activities', function ($http, $location, $window) {
+  var addActivity = function (activity) {
+    return $http({
+      method: 'POST',
+      url: '/api/activities',
+      data: activity
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
+  return {
+    addActivity: addActivity
+  };
+})
+
 .factory('Auth', function ($http, $location, $window) {
   // Don't touch this Auth service!!!
   // it is responsible for authenticating our user
