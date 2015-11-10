@@ -28,18 +28,18 @@ app.use(session({
 //   res.render('signin');
 // });
 
-app.post('/signin', function(req, res) {
+app.post('/signin', function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
   new User({ username: username })
     .fetch()
-    .then(function(user) {
+    .then(function (user) {
       if (!user) {
         res.redirect('/signin');
       } else {
         // BASIC VERSION
-        // bcrypt.compare(password, user.get('password'), function(err, match) {
+        // bcrypt.compare(password, user.get('password'), function (err, match) {
         //   if (match) {
         //     util.createSession(req, res, user);
         //   } else {
@@ -47,7 +47,7 @@ app.post('/signin', function(req, res) {
         //   }
         // });
         // ADVANCED VERSION -- see user model
-        user.comparePassword(password, function(match) {
+        user.comparePassword(password, function (match) {
           if (match) {
             util.createSession(req, res, user);
           } else {
@@ -58,7 +58,7 @@ app.post('/signin', function(req, res) {
   });
 });
 
-app.post('/signup', function(req, res) {
+app.post('/signup', function (req, res) {
   var username = req.body.username;
   var password = req.body.password;
 
@@ -67,14 +67,14 @@ app.post('/signup', function(req, res) {
 
   new User({ username: username })
     .fetch()
-    .then(function(user) {
+    .then(function (user) {
       if (!user) {
         // BASIC VERSION
-        // bcrypt.hash(password, null, null, function(err, hash) {
+        // bcrypt.hash(password, null, null, function (err, hash) {
         //   Users.create({
         //     username: username,
         //     password: hash
-        //   }).then(function(user) {
+        //   }).then(function (user) {
         //       util.createSession(req, res, user);
         //   });
         // });
@@ -84,7 +84,7 @@ app.post('/signup', function(req, res) {
           password: password
         });
         newUser.save()
-          .then(function(newUser) {
+          .then(function (newUser) {
             util.createSession(req, res, newUser);
           });
       } else {
