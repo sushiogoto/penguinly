@@ -1,7 +1,16 @@
 <div id="group-page">
   <div ui-view="navbar"></div>
-
-  {{ data.group.name }}
-
-  <div class="user" ng-repeat="user in data.users">{{ user.username }}</div>
+  <div class="user">
+    <md-content flex="50" flex-offset="25">
+      <md-list>
+        <md-subheader class="md-no-sticky"><h1>{{ data.group.name }}</h1></md-subheader>
+        <md-list-item ng-repeat="user in data.users">
+        <img src="https://media.licdn.com/mpr/mpr/shrinknp_400_400/AAEAAQAAAAAAAAYAAAAAJDA0NmNmYjM3LTkwOWUtNDdkMy04YWQxLTVjN2U4ZDI1NjZlMA.jpg" class="md-avatar" alt="{{ user.username }}">
+          <div class="md-list-item-text" layout="column">
+            <h3>{{ user.username }}</h3>
+          </div>
+        </md-list-item>
+      </md-list>
+    </md-content>
+  </div>
 </div>

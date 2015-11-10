@@ -42,8 +42,15 @@ angular.module('penguinly', [
     })
     .state('group', {
       url: '/group/:id',
-      templateUrl: 'app/groups/group_page.html',
-      controller: 'GroupPageCtrl'
+      views: {
+        '': {
+          templateUrl: 'app/groups/group_page.html',
+          controller: 'GroupPageCtrl'
+        },
+        'navbar@group': {
+          templateUrl: 'app/nav/navbar.html'
+        }
+      }
     });
     // .state('signout', {
     //   url: '/signout',
