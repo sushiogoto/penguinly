@@ -15,7 +15,10 @@ angular.module('penguinly', [
     .state('groups', {
       url: '/groups',
       views: {
-        '': { templateUrl: 'app/groups/groups.html'},
+        '': {
+          templateUrl: 'app/groups/groups.html',
+          controller: 'GroupsCtrl'
+        },
         'navbar@groups': {
           templateUrl: 'app/nav/navbar.html'
         }
@@ -31,8 +34,8 @@ angular.module('penguinly', [
       templateUrl: 'app/auth/signup.html',
       controller: 'AuthCtrl'
     });
-    // .state('signut', {
-    //   url: '/signin',
+    // .state('signout', {
+    //   url: '/signout',
     //   templateUrl: 'app/auth/signin.html'
     // });
     $httpProvider.interceptors.push('AttachTokens');
@@ -68,26 +71,27 @@ angular.module('penguinly', [
       var jwt = $window.localStorage.getItem('com.penguinly');
       if (jwt) {
         object.headers['x-access-token'] = jwt;
+      debugger;
       }
       object.headers['Allow-Control-Allow-Origin'] = '*';
       return object;
     }
   };
   return attach;
+})
+.run(function ($rootScope, $location, Auth) {
+  // here inside the run phase of angular, our services and controllers
+  // have just been registered and our app is ready
+  // however, we want to make sure the user is authorized
+  // we listen for when angular is trying to change routes
+  // when it does change routes, we then look for the token in localstorage
+  // and send that token to the server to see if it is a real user or hasn't expired
+  // if it's not valid, we then redirect back to signin/signup
+  $rootScope.$on('$routeChangeStart', function (evt, next, current) {
+    console.log(next.$$route.authenticate);
+    if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
+      console.log('waka waka');
+      $location.path('/signin');
+    }
+  });
 });
-// .run(function ($rootScope, $location, Auth) {
-//   // here inside the run phase of angular, our services and controllers
-//   // have just been registered and our app is ready
-//   // however, we want to make sure the user is authorized
-//   // we listen for when angular is trying to change routes
-//   // when it does change routes, we then look for the token in localstorage
-//   // and send that token to the server to see if it is a real user or hasn't expired
-//   // if it's not valid, we then redirect back to signin/signup
-//   $rootScope.$on('$routeChangeStart', function (evt, next, current) {
-//     console.log(next.$$route.authenticate);
-//     if (next.$$route && next.$$route.authenticate && !Auth.isAuth()) {
-//       console.log('waka waka');
-//       $location.path('/signin');
-//     }
-//   });
-// });

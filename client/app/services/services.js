@@ -1,5 +1,22 @@
 angular.module('penguinly.services', [])
 
+.factory('Groups', function ($http) {
+  var createGroup = function (groupName) {
+    return $http({
+      method: 'POST',
+      url: '/groups',
+      data: groupName
+    })
+    .then(function (res) {
+      return res;
+    });
+  };
+
+  return {
+    createGroup: createGroup
+  };
+})
+
 .factory('Auth', function ($http, $location, $window) {
   // Don't touch this Auth service!!!
   // it is responsible for authenticating our user

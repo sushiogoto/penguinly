@@ -2,6 +2,14 @@
   <div ui-view="navbar"></div>
 
   <md-content>
+    <br>
+    <md-input-container class="md-icon-float md-block">
+      <!-- Use floating label instead of placeholder -->
+      <form name="groupInput" ng-submit='addGroup()'>
+        <label>Create a group</label>
+        <input name="groupName" ng-model="groupName" type="text">
+      </form>
+    </md-input-container>
     <md-list>
       <md-subheader class="md-no-sticky">Groups</md-subheader>
       <md-list-item class="md-3-line">
@@ -12,6 +20,8 @@
           <p>Spoken</p>
         </div>
       </md-list-item>
+
+      <md-button class="md-raised" ng-click="signout()">SIGN OUT</md-button>
      <!--  <md-divider></md-divider>
       <md-subheader class="md-no-sticky">2 line item</md-subheader>
       <md-list-item class="md-2-line">
