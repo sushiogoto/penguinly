@@ -3,7 +3,7 @@
 // in our signup/signin forms using the injected Auth service
 angular.module('penguinly.auth', ['ngAnimate'])
 
-.controller('AuthController', function ($scope, $window, $location, Auth) {
+.controller('AuthCtrl', function ($scope, $window, $location, Auth) {
   $scope.user = {};
   $scope.errorBool = false;
 

@@ -38,15 +38,6 @@ app.post('/signin', function (req, res) {
       if (!user) {
         res.redirect('/signin');
       } else {
-        // BASIC VERSION
-        // bcrypt.compare(password, user.get('password'), function (err, match) {
-        //   if (match) {
-        //     util.createSession(req, res, user);
-        //   } else {
-        //     res.redirect('/signin');
-        //   }
-        // });
-        // ADVANCED VERSION -- see user model
         user.comparePassword(password, function (match) {
           if (match) {
             util.createSession(req, res, user);
@@ -69,16 +60,6 @@ app.post('/signup', function (req, res) {
     .fetch()
     .then(function (user) {
       if (!user) {
-        // BASIC VERSION
-        // bcrypt.hash(password, null, null, function (err, hash) {
-        //   Users.create({
-        //     username: username,
-        //     password: hash
-        //   }).then(function (user) {
-        //       util.createSession(req, res, user);
-        //   });
-        // });
-        // ADVANCED VERSION -- see user model
         var newUser = new User({
           username: username,
           password: password
@@ -92,6 +73,12 @@ app.post('/signup', function (req, res) {
         res.redirect('/signup');
       }
     });
+});
+
+app.get('/logout', function(req, res) {
+  req.session.destroy(function(){
+    res.redirect('/signin');
+  });
 });
 
 console.log('penguins are listening on 8000');

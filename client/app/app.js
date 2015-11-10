@@ -3,30 +3,61 @@ angular.module('penguinly', [
     'penguinly.auth',
     'penguinly.groups',
     'ngRoute',
-    'ngMaterial'
+    'ngMaterial',
+    'ui.router'
 ])
 
-.config(function ($routeProvider, $httpProvider) {
-  $routeProvider
-    .when('/signin', {
+.config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
+
+  $urlRouterProvider.otherwise('/groups');
+
+  $stateProvider
+    .state('groups', {
+      url: '/groups',
+      views: {
+        '': { templateUrl: 'app/groups/groups.html'},
+        'navbar@groups': {
+          templateUrl: 'app/nav/navbar.html'
+        }
+      }
+    })
+    .state('signin', {
+      url: '/signin',
       templateUrl: 'app/auth/signin.html',
-      controller: 'AuthController'
+      controller: 'AuthCtrl'
     })
-    .when('/signup', {
+    .state('signup', {
+      url: '/signup',
       templateUrl: 'app/auth/signup.html',
-      controller: 'AuthController'
-    })
-    .when('/groups', {
-      templateUrl: 'app/groups/groups.html',
-      controller: 'GroupsCtrl',
-      authenticate: true
-    })
-    .otherwise({
-      redirectTo: '/groups',
-      authenticate: true
+      controller: 'AuthCtrl'
     });
+    // .state('signut', {
+    //   url: '/signin',
+    //   templateUrl: 'app/auth/signin.html'
+    // });
     $httpProvider.interceptors.push('AttachTokens');
 })
+// .config(function ($routeProvider, $httpProvider) {
+//   $routeProvider
+//     .when('/signin', {
+//       templateUrl: 'app/auth/signin.html',
+//       controller: 'AuthController'
+//     })
+//     .when('/signup', {
+//       templateUrl: 'app/auth/signup.html',
+//       controller: 'AuthController'
+//     })
+//     .when('/groups', {
+//       templateUrl: 'app/groups/groups.html',
+//       controller: 'GroupsCtrl',
+//       authenticate: true
+//     })
+//     .otherwise({
+//       redirectTo: '/groups',
+//       authenticate: true
+//     });
+//     $httpProvider.interceptors.push('AttachTokens');
+// })
 .factory('AttachTokens', function ($window) {
   // this is an $httpInterceptor
   // its job is to stop all out going request
