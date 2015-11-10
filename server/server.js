@@ -69,7 +69,7 @@ app.use(session({
 //   }
 // };
 
-app.post('/groups', function (req, res) {
+app.post('/groups', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;
 
@@ -77,19 +77,20 @@ app.post('/groups', function (req, res) {
 
   new User({ 'username': username })
     .fetch()
-    .then(function(user) {
+    .then(function (user) {
       new Group({ 'name': groupName })
         .fetch()
         .then(function (group) {
-                console.log('cmon');
           if (!group) {
             var newGroup = new Group({
               'name': groupName
             });
             newGroup.save()
               .then(function (newGroup) {
-                user.set('group_id', newGroup.id);
-                user.save();
+                if (user.get('group_id') === null) {
+                  user.set('group_id', newGroup.id);
+                  user.save();
+                }
                 // TODO!! Redirect to that group's page
                 res.sendStatus(201);
               });
@@ -102,7 +103,7 @@ app.post('/groups', function (req, res) {
 
 });
 
-app.post('/signin', function (req, res) {
+app.post('/signin', function (req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
 
@@ -127,7 +128,7 @@ app.post('/signin', function (req, res) {
   });
 });
 
-app.post('/signup', function (req, res) {
+app.post('/signup', function (req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
 
@@ -147,11 +148,8 @@ app.post('/signup', function (req, res) {
             var token = jwt.encode(user, 'secret');
             res.json({
               token: token,
-              user: user.attributes.username
+              user: newUser.attributes.username
             });
-          })
-          .fail(function (error) {
-            next(error);
           });
       } else {
         next(new Error('User already exist!'));
@@ -159,7 +157,7 @@ app.post('/signup', function (req, res) {
     });
 });
 
-app.get('/logout', function (req, res) {
+app.get('/logout', function (req, res, next) {
   req.session.destroy(function () {
     res.redirect('/signin');
   });
