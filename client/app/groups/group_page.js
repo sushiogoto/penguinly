@@ -1,6 +1,6 @@
 angular.module('penguinly.groupPage', [])
 
-  .controller('GroupPageCtrl', function ($scope, $state, $stateParams, Groups) {
+  .controller('GroupPageCtrl', function ($scope, $state, $stateParams, Groups, Activities) {
     $scope.data = {};
     $scope.groupId = $stateParams.id;
 
@@ -16,6 +16,14 @@ angular.module('penguinly.groupPage', [])
         $scope.data.users = res;
       });
     };
+
+    $scope.fetchActivities = function () {
+      Activities.getActivities($scope.groupId).then(function (data) {
+        $scope.data.activities = data;
+      });
+    };
+
+    $scope.fetchActivities();
 
     $scope.getUsers($scope.groupId);
     $scope.getGroup($scope.groupId);

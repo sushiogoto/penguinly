@@ -5,6 +5,7 @@ angular.module('penguinly', [
     'penguinly.groups',
     'penguinly.navbar',
     'penguinly.newActivity',
+    'penguinly.activities',
     'ngRoute',
     'ngMaterial',
     'ui.router',
@@ -52,6 +53,10 @@ angular.module('penguinly', [
         },
         'navbar@group': {
           templateUrl: 'app/nav/navbar.html'
+        },
+        'activities@group': {
+          templateUrl: 'app/activities/activities.html',
+          controller: 'GroupPageCtrl'
         }
       }
     })
@@ -63,6 +68,18 @@ angular.module('penguinly', [
           controller: 'NewActivityCtrl'
         },
         'navbar@newactivity': {
+          templateUrl: 'app/nav/navbar.html'
+        }
+      }
+    })
+    .state('activities', {
+      url: '/group/:group_id/activities',
+      views: {
+        '': {
+          templateUrl: 'app/activities/activities.html',
+          controller: 'ActivitiesCtrl'
+        },
+        'navbar@activities': {
           templateUrl: 'app/nav/navbar.html'
         }
       }

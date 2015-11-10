@@ -71,7 +71,7 @@ app.use(session({
 // };
 app.post('/api/activities', function (req, res, next) {
   console.log(req.body);
-  var newActivity = new Activity({ 
+  var newActivity = new Activity({
     'title': req.body.title,
     'date_time': req.body.datetime,
     'description': req.body.description,
@@ -81,8 +81,41 @@ app.post('/api/activities', function (req, res, next) {
   newActivity.save()
     .then(function (activity) {
     res.json(activity);
-  })
-})
+  });
+});
+
+app.get('/api/activities', function (req, res, next) {
+  // new User().query({where: {group_id: groupId}}).then(function(users) {
+  //    // postComments should now be a collection where each is loaded with related user & post
+  //    console.log(JSON.stringify(users));
+  // });
+
+  console.log('INSIDE ACTIVITIES');
+  var urlParts = url.parse(req.url, true);
+  var query = urlParts.query;
+  var groupId = query.group_id;
+  console.log('group id: ' + JSON.stringify(query));
+
+  Activity
+    .query('where', 'group_id', '=', groupId)
+    .fetchAll({
+      withRelated: ['group'],
+      columns: ['id', 'title'],
+      debug: true
+    }).then(function (activities) {
+      res.json(activities);
+    }).catch(function (error) {
+      console.error(error);
+    });
+    // .then(function (group) {
+    //   if (group) {
+    //     res.json(group.attributes);
+    //   } else {
+    //     res.sendStatus(404);
+    //   }
+    // });
+});
+
 app.post('/groups', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;
@@ -140,6 +173,7 @@ app.get('/api/users', function (req, res, next) {
       console.error(error);
     });
 });
+
 
 app.get('/groups', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
