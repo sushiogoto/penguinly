@@ -4,6 +4,7 @@ angular.module('penguinly', [
     'penguinly.groupPage',
     'penguinly.groups',
     'penguinly.navbar',
+    'penguinly.newActivity',
     'ngRoute',
     'ngMaterial',
     'ui.router'
@@ -48,6 +49,18 @@ angular.module('penguinly', [
           controller: 'GroupPageCtrl'
         },
         'navbar@group': {
+          templateUrl: 'app/nav/navbar.html'
+        }
+      }
+    })
+    .state('newactivity', {
+      url: '/activity/create',
+      views: {
+        '': {
+          templateUrl: 'app/activities/new_activity.html',
+          controller: 'NewActivityCtrl',
+        },
+        'navbar@newactivity': {
           templateUrl: 'app/nav/navbar.html'
         }
       }

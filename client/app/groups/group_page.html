@@ -2,6 +2,7 @@
   <div ui-view="navbar"></div>
   <div class="user">
     <md-content flex="50" flex-offset="25">
+      <md-button class="md-raised md-primary" ui-sref='newactivity'>Add activity</md-button>
       <md-list>
         <md-subheader class="md-no-sticky"><h1>{{ data.group.name }}</h1></md-subheader>
         <md-list-item ng-repeat="user in data.users">
