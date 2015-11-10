@@ -7,7 +7,9 @@ angular.module('penguinly', [
     'penguinly.newActivity',
     'ngRoute',
     'ngMaterial',
-    'ui.router'
+    'ui.router',
+    'ngMessages',
+    'scDateTime'
 ])
 
 .config(function ($stateProvider, $urlRouterProvider, $httpProvider) {
@@ -58,7 +60,7 @@ angular.module('penguinly', [
       views: {
         '': {
           templateUrl: 'app/activities/new_activity.html',
-          controller: 'NewActivityCtrl',
+          controller: 'NewActivityCtrl'
         },
         'navbar@newactivity': {
           templateUrl: 'app/nav/navbar.html'

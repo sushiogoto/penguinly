@@ -1,4 +1,33 @@
 <div id="new-activity">
   <div ui-view="navbar"></div>
-  YO
+  <md-content flex="60" flex-offset="20">
+    <br>
+      <form name="newActivityInput" ng-submit='newActivity()'>
+        <md-input-container class="md-block">
+          <label>Title</label>
+          <input required="" md-maxlength="30" name="title" ng-model="activity.title">
+          <div ng-messages="newActivityInput.title.$error">
+            <div ng-message="required">This is required.</div>
+            <div ng-message="md-maxlength">The name has to be less than 30 characters long.</div>
+          </div>
+        </md-input-container>
+        <br>
+
+        <!-- problem with the date time picker - saves automatically on click if it's the last input to be filled out -->
+
+        <time-date-picker ng-model="activity.datetime" autosave='false'></time-date-picker>
+
+        <md-input-container class="md-block">
+          <label>Description</label>
+          <input required="" name="description" ng-model="activity.description">
+          <div ng-messages="newActivityInput.description.$error">
+            <div ng-message="required">This is required.</div>
+          </div>
+        </md-input-container>
+
+
+<!--         <label>Add a new activity</label>
+        <input name="activityTitle" ng-model="activityTitle" type="text"> -->
+      </form>
+  </md-content>
 </div>

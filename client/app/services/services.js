@@ -34,7 +34,6 @@ angular.module('penguinly.services', [])
   };
 
   var getUsers = function (groupId) {
-    console.log('getting');
     return $http({
       method: 'GET',
       url: '/api/users?id=' + groupId
