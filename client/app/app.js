@@ -1,6 +1,7 @@
 angular.module('penguinly', [
     'penguinly.services',
     'penguinly.auth',
+    'penguinly.groupPage',
     'penguinly.groups',
     'penguinly.navbar',
     'ngRoute',
@@ -41,7 +42,7 @@ angular.module('penguinly', [
     })
     .state('group', {
       url: '/group/:id',
-      templateUrl: 'app/groups/group.html',
+      templateUrl: 'app/groups/group_page.html',
       controller: 'GroupPageCtrl'
     });
     // .state('signout', {

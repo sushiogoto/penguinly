@@ -97,7 +97,7 @@ app.post('/groups', function (req, res, next) {
                 res.json({
                   name: newGroup.name,
                   id: newGroup.id
-                })
+                });
               });
           } else {
             // TODO!!! Change these to redirects to group page
@@ -121,12 +121,12 @@ app.get('/api/users', function (req, res, next) {
       withRelated: ['group'],
       columns: ['id', 'username'],
       debug: true
-    }).then(function(users) {
+    }).then(function (users) {
       res.json(users);
-    }).catch(function(error) {
+    }).catch(function (error) {
       console.error(error);
     });
-})
+});
 
 app.get('/groups', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
@@ -146,7 +146,7 @@ app.get('/groups', function (req, res, next) {
       } else {
         res.sendStatus(404);
       }
-    })
+    });
 });
 
 // app.get('/groups/users', function (req, res, next) {
