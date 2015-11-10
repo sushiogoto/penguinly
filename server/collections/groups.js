@@ -1,5 +1,5 @@
 var db = require('../config');
-var User = require('../models/group');
+var Group = require('../models/group');
 
 var Groups = new db.Collection();
 

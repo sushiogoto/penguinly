@@ -1,11 +1,11 @@
 angular.module('penguinly.services', [])
 
 .factory('Groups', function ($http) {
-  var createGroup = function (groupName) {
+  var createGroup = function (group) {
     return $http({
       method: 'POST',
       url: '/groups',
-      data: groupName
+      data: group
     })
     .then(function (res) {
       return res;

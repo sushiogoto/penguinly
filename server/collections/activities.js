@@ -1,5 +1,5 @@
 var db = require('../config');
-var User = require('../models/activity');
+var Activity = require('../models/activity');
 
 var Activities = new db.Collection();
 

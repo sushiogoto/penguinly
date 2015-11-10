@@ -11,6 +11,7 @@ var User = require('./models/user');
 var Activity = require('./models/activity');
 var ActivityUser = require('./models/activityuser');
 var Group = require('./models/group');
+var Groups = require('./collections/groups');
 var app = express();
 
 var morgan = require('morgan'); // used for logging incoming request
@@ -70,26 +71,35 @@ app.use(session({
 
 app.post('/groups', function (req, res) {
   var groupName = req.body.name;
-  var user = req.body.user;
+  var username = req.body.user;
 
-  new Group({ name: groupName })
+  console.log(groupName);
+
+  new User({ 'username': username })
     .fetch()
-    .then(function (group) {
-      if (!group) {
-        var newGroup = new Group({
-          name: groupName
-        });
-        newGroup.save()
-          .then(function (newGroup) {
-            newGroup.attach(user);
-            // TODO!! Redirect to that group's page
-            res.sendStatus(201);
-          });
-      } else {
-        // TODO!!! Change these to redirects to group page
-        res.sendStatus(404);
-      }
-  });
+    .then(function(user) {
+      new Group({ 'name': groupName })
+        .fetch()
+        .then(function (group) {
+                console.log('cmon');
+          if (!group) {
+            var newGroup = new Group({
+              'name': groupName
+            });
+            newGroup.save()
+              .then(function (newGroup) {
+                user.set('group_id', newGroup.id);
+                user.save();
+                // TODO!! Redirect to that group's page
+                res.sendStatus(201);
+              });
+          } else {
+            // TODO!!! Change these to redirects to group page
+            res.sendStatus(404);
+          }
+      });
+    });
+
 });
 
 app.post('/signin', function (req, res) {
