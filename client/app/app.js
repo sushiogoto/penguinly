@@ -18,7 +18,7 @@ angular.module('penguinly', [
     })
     .when('/groups', {
       templateUrl: 'app/groups/groups.html',
-      controller: 'GroupsController',
+      controller: 'GroupsCtrl',
       authenticate: true
     })
     .otherwise({
