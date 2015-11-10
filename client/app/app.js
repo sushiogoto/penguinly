@@ -2,6 +2,7 @@ angular.module('penguinly', [
     'penguinly.services',
     'penguinly.auth',
     'penguinly.groups',
+    'penguinly.navbar',
     'ngRoute',
     'ngMaterial',
     'ui.router'
@@ -12,6 +13,10 @@ angular.module('penguinly', [
   $urlRouterProvider.otherwise('/groups');
 
   $stateProvider
+    .state('navbar', {
+      templateUrl: 'app/nav/navbar.html',
+      controller: 'NavbarCtrl'
+    })
     .state('groups', {
       url: '/groups',
       views: {
