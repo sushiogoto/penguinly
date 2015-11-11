@@ -84,10 +84,25 @@ angular.module('penguinly.services', [])
     });
   };
 
+  var addVote = function (username, activityId) {
+    return $http({
+      method: 'POST',
+      url: '/api/activity',
+      data: {
+        username: username,
+        activityId: activityId
+      }
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
   return {
     addActivity: addActivity,
     getActivities: getActivities,
-    getActivity: getActivity
+    getActivity: getActivity,
+    addVote: addVote
   };
 })
 

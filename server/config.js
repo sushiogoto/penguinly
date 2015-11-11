@@ -35,8 +35,8 @@ db.knex.schema.hasTable('activityusers').then(function (exists) {
     db.knex.schema.createTable('activityusers', function (activityuser) {
       activityuser.increments('id').primary();
       activityuser.boolean('voted');
-      activityuser.integer('user_id').references('activities.id');
-      activityuser.integer('activity_id').references('users.id');
+      activityuser.integer('user_id').references('users.id');
+      activityuser.integer('activity_id').references('activities.id');
     }).then(function (table) {
       console.log('Created ActivityUser Table', table);
     });

@@ -1,7 +1,8 @@
 angular.module('penguinly.newActivity', [])
   .controller('NewActivityCtrl', function ($scope, $state, $stateParams, Activities) {
     $scope.activity = {};
-    $scope.group_id = $stateParams.id;
+    // need to set the group_id on activity for query later on
+    $scope.activity.group_id = $stateParams.id;
     $scope.newActivity = function () {
       console.log($scope.activity);
       Activities.addActivity($scope.activity).then(function (data) {
@@ -9,7 +10,7 @@ angular.module('penguinly.newActivity', [])
         //    group_id: data.group_id
         // });
         $state.transitionTo("group", {
-           id: data.group_id
+           id: $scope.activity.group_id
         });
       });
     };

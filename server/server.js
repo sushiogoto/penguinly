@@ -70,7 +70,6 @@ app.use(session({
 //   }
 // };
 app.post('/api/activities', function (req, res, next) {
-  console.log(req.body);
   var newActivity = new Activity({
     'title': req.body.title,
     'date_time': req.body.datetime,
@@ -80,7 +79,35 @@ app.post('/api/activities', function (req, res, next) {
 
   newActivity.save()
     .then(function (activity) {
-    res.json(activity);
+      User
+        .query('where', 'group_id', '=', req.body.group_id)
+        .fetchAll({
+          withRelated: ['group'],
+          columns: ['id', 'username'],
+          debug: true
+        }).then(function (users) {
+          users.forEach(function (user) {
+            var newActivityUser = new ActivityUser({
+              user_id: user.id,
+              activity_id: activity.id
+            })
+
+            newActivityUser.save()
+              .then(function (activityUser) {
+                console.log('new activityuser: ' + activityUser);
+              }).catch(function (error) {
+                console.log(error);
+              })
+          })
+          res.json(users);
+        }).catch(function (error) {
+          console.error(error);
+        });
+      // loop through all users who are part of group and create new activity user
+
+
+      // ************TO DO REMEMBER TO SEND THE CORRECT RES!!!!
+    // res.json(activity);
   });
 });
 
@@ -90,11 +117,54 @@ app.get('/api/activities', function (req, res, next) {
   //    console.log(JSON.stringify(users));
   // });
 
-  console.log('INSIDE ACTIVITIES');
   var urlParts = url.parse(req.url, true);
   var query = urlParts.query;
   var groupId = query.group_id;
-  console.log('group id: ' + JSON.stringify(query));
+
+  // ActivityUser
+  //   .query('where', 'group_id', '=', groupId)
+  //   .fetchAll({
+  //     withRelated: ['group'],
+  //     columns: ['id', 'title'],
+  //     debug: true
+  //   }).then(function (activities) {
+  //     res.json(activities);
+  //   }).catch(function (error) {
+  //     console.error(error);
+  //   });
+  //   // .then(function (group) {
+  //   //   if (group) {
+  //   //     res.json(group.attributes);
+  //   //   } else {
+  //   //     res.sendStatus(404);
+  //   //   }
+  //   // });
+});
+
+app.get('/api/activity', function (req, res, next) {
+  // new User().query({where: {group_id: groupId}}).then(function(users) {
+  //    // postComments should now be a collection where each is loaded with related user & post
+  //    console.log(JSON.stringify(users));
+  // });
+
+  var urlParts = url.parse(req.url, true);
+  var query = urlParts.query;
+  var activityId = query.activity_id;
+
+  new Activity({ 'id': activityId })
+    .fetch()
+    .then(function (activity) {
+      res.json(activity);
+    });
+});
+
+app.get('/api/activity', function (req, res, next) {
+  // new User().query({where: {group_id: groupId}}).then(function(users) {
+  //    // postComments should now be a collection where each is loaded with related user & post
+  //    console.log(JSON.stringify(users));
+  // });
+  var username = req.body.username;
+  var activityId = req.body.activityId;
 
   Activity
     .query('where', 'group_id', '=', groupId)
@@ -116,30 +186,10 @@ app.get('/api/activities', function (req, res, next) {
     // });
 });
 
-app.get('/api/activity', function (req, res, next) {
-  // new User().query({where: {group_id: groupId}}).then(function(users) {
-  //    // postComments should now be a collection where each is loaded with related user & post
-  //    console.log(JSON.stringify(users));
-  // });
-
-  console.log('INSIDE ACTIVITY');
-  var urlParts = url.parse(req.url, true);
-  var query = urlParts.query;
-  var activityId = query.activity_id;
-  console.log(query);
-
-  new Activity({ 'id': activityId })
-    .fetch()
-    .then(function (activity) {
-      res.json(activity);
-    })
-});
-
 app.post('/groups', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;
 
-  console.log(groupName);
 
   new User({ 'username': username })
     .fetch()
@@ -177,8 +227,6 @@ app.get('/api/users', function (req, res, next) {
   var urlParts = url.parse(req.url, true);
   var query = urlParts.query;
   var groupId = query.id;
-  console.log(groupId);
-  console.log("GOTTTTTTTTT");
 
   User
     .query('where', 'group_id', '=', groupId)
@@ -226,7 +274,6 @@ app.post('/groups/join', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;
 
-  console.log(groupName);
 
   new User({ 'username': username })
     .fetch()
@@ -276,9 +323,6 @@ app.post('/signin', function (req, res, next) {
 app.post('/signup', function (req, res, next) {
   var username = req.body.username;
   var password = req.body.password;
-
-  console.log(username);
-  console.log(password);
 
   new User({ username: username })
     .fetch()
