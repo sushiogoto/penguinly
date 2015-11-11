@@ -199,7 +199,6 @@ app.post('/api/activity', function (req, res, next) {
             activityUsers.models.forEach(function (activityUser) {
               if (activityUser.get('voted') === null) {
                   // console.log(user.id);
-                  console.log(activityUser.get('user_id'));
                 if (activityUser.get('user_id') === user.id) {
                   activityUser.set('voted', true);
                   votes += 1;

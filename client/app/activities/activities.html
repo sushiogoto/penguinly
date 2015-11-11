@@ -1,4 +1,16 @@
 <div id="activities">
+  <md-grid-list md-cols-sm="1" md-cols-md="2" md-cols-gt-md="6" md-row-height-gt-md="1:1" md-row-height="1:1" md-gutter="12px" md-gutter-gt-sm="8px">
+      <md-subheader class="md-no-sticky"><h1>Activities</h1></md-subheader>
+      <md-grid-tile ng-style="{'background': randomColor()}" md-colspan='2' ng-repeat="activity in data.activities">
+        <a ui-sref="activity({id: activity.id, group_id: groupId})">
+        <md-grid-tile-header>
+          <h3>{{ activity.title }}</h3>
+        </md-grid-tile-header>
+        </a>
+      </md-grid-tile>
+
+  </md-grid-list>
+<!--
   <md-list>
     <md-subheader class="md-no-sticky"><h1>Activities</h1></md-subheader>
     <md-list-item ng-repeat="activity in data.activities">
@@ -6,5 +18,5 @@
         <h3>{{ activity.title }}</h3>
       </div>
     </md-list-item>
-  </md-list>
+  </md-list> -->
 </div>

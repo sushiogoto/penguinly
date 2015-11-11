@@ -16,7 +16,6 @@ angular.module('penguinly.activityPage', [])
 
     // vote button
     $scope.sendVote = function () {
-      console.log('vote');
       Activities.addVote($window.localStorage.getItem('currentUser'), $scope.activityId)
         .then(function (data) {
           $scope.data.votes = data.data;
