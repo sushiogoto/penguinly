@@ -116,6 +116,25 @@ app.get('/api/activities', function (req, res, next) {
     // });
 });
 
+app.get('/api/activity', function (req, res, next) {
+  // new User().query({where: {group_id: groupId}}).then(function(users) {
+  //    // postComments should now be a collection where each is loaded with related user & post
+  //    console.log(JSON.stringify(users));
+  // });
+
+  console.log('INSIDE ACTIVITY');
+  var urlParts = url.parse(req.url, true);
+  var query = urlParts.query;
+  var activityId = query.activity_id;
+  console.log(query);
+
+  new Activity({ 'id': activityId })
+    .fetch()
+    .then(function (activity) {
+      res.json(activity);
+    })
+});
+
 app.post('/groups', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;

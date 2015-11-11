@@ -74,9 +74,20 @@ angular.module('penguinly.services', [])
     });
   };
 
+  var getActivity = function (activityId) {
+    return $http({
+      method: 'GET',
+      url: '/api/activity?activity_id=' + activityId
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
   return {
     addActivity: addActivity,
-    getActivities: getActivities
+    getActivities: getActivities,
+    getActivity: getActivity
   };
 })
 

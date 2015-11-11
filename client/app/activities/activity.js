@@ -1,14 +1,16 @@
 angular.module('penguinly.activityPage', [])
   .controller('ActivityPageCtrl', function ($scope, $state, $stateParams, Activities) {
-    // $scope.data = {};
-    // $scope.group_id = $stateParams.group_id;
+    $scope.data = {};
+    $scope.activityId = $stateParams.id;
+    $scope.fetchActivity = function () {
+      Activities.getActivity($scope.activityId).then(function (data) {
+        $scope.data.activity = data;
+      });
+    };
 
-    // $scope.fetchActivities = function () {
-    //   Activities.getActivities($scope.group_id).then(function (data) {
-    //     $scope.data.activities = data;
-    //   });
-    // };
+    // get all votes
 
-    // $scope.fetchActivities();
-    // console.log($scope.data.activities);
+    // vote button
+
+    $scope.fetchActivity();
   });

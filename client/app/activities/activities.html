@@ -2,7 +2,7 @@
   <md-list>
     <md-subheader class="md-no-sticky"><h1>Activities</h1></md-subheader>
     <md-list-item ng-repeat="activity in data.activities">
-      <div class="md-list-item-text" layout="column" ui-sref="activity({id: id, group_id: group_id})">
+      <div class="md-list-item-text" layout="column" ui-sref="activity({id: activity.id, group_id: groupId})">
         <h3>{{ activity.title }}</h3>
       </div>
     </md-list-item>

@@ -86,7 +86,7 @@ angular.module('penguinly', [
       }
     })
     .state('activity', {
-      url: '/activity/:id',
+      url: '/activity/id=:id&group_id=:group_id',
       views: {
         '': {
           templateUrl: 'app/activities/activity.html',
