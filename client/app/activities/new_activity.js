@@ -2,6 +2,11 @@ angular.module('penguinly.newActivity', [])
   .controller('NewActivityCtrl', function ($scope, $state, $stateParams, Activities) {
     $scope.activity = {};
     // need to set the group_id on activity for query later on
+
+    $scope.signout = function () {
+      Auth.signout();
+    };
+
     $scope.activity.group_id = $stateParams.id;
     $scope.newActivity = function () {
       console.log($scope.activity);

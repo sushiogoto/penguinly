@@ -170,22 +170,71 @@ app.get('/api/activity', function (req, res, next) {
     });
 });
 
-app.get('/api/activity', function (req, res, next) {
+app.post('/api/activity', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
   //    // postComments should now be a collection where each is loaded with related user & post
   //    console.log(JSON.stringify(users));
   // });
   var username = req.body.username;
   var activityId = req.body.activityId;
+  console.log(activityId);
 
-  Activity
-    .query('where', 'group_id', '=', groupId)
+  ActivityUser
+    .query('where', 'activity_id', '=', activityId)
     .fetchAll({
-      withRelated: ['group'],
-      columns: ['id', 'title'],
+      // should refactor code to send a user_id instead of usename
+      // need to add user_id to session
+      columns: ['voted', 'user_id'],
       debug: true
-    }).then(function (activities) {
-      res.json(activities);
+    }).then(function (activityUsers) {
+      new User({ 'username': username })
+        .fetch()
+        .then(function (user) {
+          var votes = 0;
+          console.log('===============================');
+          // console.log('MODELS' + Array.isArray(activityUsers["models"]));
+
+          (function (countdown) {
+            countdown = 0;
+            activityUsers.models.forEach(function (activityUser) {
+              if (activityUser.get('voted') === null) {
+                  // console.log(user.id);
+                  console.log(activityUser.get('user_id'));
+                if (activityUser.get('user_id') === user.id) {
+                  activityUser.set('voted', true);
+                  votes += 1;
+                  activityUser.save();
+                  }
+              } else {
+                votes += 1;
+              }
+              // console.log(votes);
+              countdown += 1;
+              if (countdown === activityUsers.models.length) {
+                console.log(votes);
+                res.json(votes);
+              }
+            });
+          })();
+          // for(var key in activityUsers) {
+          //   (function(key) {
+          //   console.log(activityUsers[key]);
+          //   console.log('key: ' + key);
+          //   if (activityUsers[key].voted === null) {
+          //     if (activityUsers[key].user_id === user.id) {
+          //       activityUsers[key].set('voted', true);
+          //       votes += 1;
+          //       activityUsers[key].save();
+          //       }
+          //   } else {
+          //     votes += 1;
+          //   }
+          //   console.log(votes);
+          //   })(key);
+          // }
+          // activityUsers.forEach(function (activityUser) {
+          // });
+        });
     }).catch(function (error) {
       console.error(error);
     });

@@ -1,8 +1,11 @@
 <div id="activity">
   <div ui-view="navbar"></div>
   <md-content flex='60' flex-offset='20'>
+    <md-button class="md-raised md-primary" ng-click="sendVote()">Upvote</md-button>
+
     <md-list>
-      <md-subheader class="md-no-sticky"><h1>{{ data.activity.title }}</h1></md-subheader>
+      <md-subheader class="md-no-sticky"><h1>{{ data.activity.title }}</h1>
+      <h2>Votes: {{ data.votes }}</h2></md-subheader>
       <md-list-item>
         <div class="md-list-item-text" layout="column">
           <h3>{{ data.activity.description }}</h3>

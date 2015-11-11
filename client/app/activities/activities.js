@@ -9,6 +9,10 @@ angular.module('penguinly.activities', [])
       });
     };
 
+    $scope.signout = function () {
+      Auth.signout();
+    };
+
     $scope.fetchActivities();
     console.log($scope.data.activities);
   });

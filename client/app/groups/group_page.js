@@ -19,9 +19,12 @@ angular.module('penguinly.groupPage', [])
 
     $scope.fetchActivities = function () {
       Activities.getActivities($scope.groupId).then(function (data) {
-        debugger;
         $scope.data.activities = data;
       });
+    };
+
+    $scope.signout = function () {
+      Auth.signout();
     };
 
     $scope.fetchActivities();

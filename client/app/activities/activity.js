@@ -8,13 +8,18 @@ angular.module('penguinly.activityPage', [])
       });
     };
 
+    $scope.signout = function () {
+      Auth.signout();
+    };
+
     // get all votes
 
     // vote button
     $scope.sendVote = function () {
-      addVote($window.localStorage.getItem('currentUser'), $scope.activityId)
+      console.log('vote');
+      Activities.addVote($window.localStorage.getItem('currentUser'), $scope.activityId)
         .then(function (data) {
-          debugger;
+          $scope.data.votes = data.data;
         });
     };
 

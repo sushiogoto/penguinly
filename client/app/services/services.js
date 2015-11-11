@@ -94,7 +94,7 @@ angular.module('penguinly.services', [])
       }
     })
     .then(function (res) {
-      return res.data;
+      return res;
     });
   };
 
