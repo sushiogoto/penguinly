@@ -90,15 +90,15 @@ app.post('/api/activities', function (req, res, next) {
             var newActivityUser = new ActivityUser({
               user_id: user.id,
               activity_id: activity.id
-            })
+            });
 
             newActivityUser.save()
               .then(function (activityUser) {
                 console.log('new activityuser: ' + activityUser);
               }).catch(function (error) {
                 console.log(error);
-              })
-          })
+              });
+          });
           res.json(users);
         }).catch(function (error) {
           console.error(error);
@@ -139,6 +139,18 @@ app.get('/api/activities', function (req, res, next) {
   //   //     res.sendStatus(404);
   //   //   }
   //   // });
+
+  Activity
+    .query('where', 'group_id', '=', groupId)
+    .fetchAll({
+      withRelated: ['group'],
+      columns: ['id', 'title'],
+      debug: true
+    }).then(function (activities) {
+      res.json(activities);
+    }).catch(function (error) {
+      console.error(error);
+    });
 });
 
 app.get('/api/activity', function (req, res, next) {
