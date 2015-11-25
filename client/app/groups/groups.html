@@ -5,7 +5,7 @@
     <br>
     <md-input-container class="md-icon-float md-block">
       <!-- Use floating label instead of placeholder -->
-      <form name="groupInput">
+      <form name="groupInput" ng-submit='addGroup()'>
         <label>Create a group</label>
         <input name="groupName" ng-model="groupName" type="text">
       </form>
