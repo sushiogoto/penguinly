@@ -46,7 +46,7 @@ angular.module('penguinly', [
       controller: 'AuthCtrl'
     })
     .state('group', {
-      url: '/group/:id',
+      url: '/group/:id?newgroup',
       views: {
         '': {
           templateUrl: 'app/groups/group_page.html',

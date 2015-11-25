@@ -1,6 +1,7 @@
 angular.module('penguinly.groups', [])
 
 .controller('GroupsCtrl', function ($scope, $location, $window, $state, Groups, Auth) {
+
   $scope.addGroup = function () {
     Groups.createGroup({
       name: $scope.groupName,
@@ -9,7 +10,8 @@ angular.module('penguinly.groups', [])
       // $scope.getGroup(res);
       console.log(res.data.id);
       $state.transitionTo("group", {
-         id: res.data.id
+         id: res.data.id,
+         newgroup: true
       });
 
     });
