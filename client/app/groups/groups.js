@@ -1,21 +1,22 @@
 angular.module('penguinly.groups', [])
 
-.controller('GroupsCtrl', function ($scope, $location, $window, $state, Groups, Auth) {
+.controller('GroupsCtrl', function ($scope, $location, $window, $state, $mdDialog, Groups, Auth) {
 
-  $scope.addGroup = function () {
-    Groups.createGroup({
-      name: $scope.groupName,
-      user: $window.localStorage.getItem('currentUser')
-    }).then(function (res) {
-      // $scope.getGroup(res);
-      console.log(res.data.id);
-      $state.transitionTo("group", {
-         id: res.data.id,
-         newgroup: true
-      });
+  $scope.status = '  ';
 
+  $scope.showAdvanced = function(ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'dialog1.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose:true
+    })
+    .then(function(answer) {
+      $scope.status = 'You said the information was "' + answer + '".';
+    }, function() {
+      $scope.status = 'You cancelled the dialog.';
     });
-    $scope.groupName = "";
   };
 
   $scope.joinGroup = function () {
@@ -31,3 +32,36 @@ angular.module('penguinly.groups', [])
   };
 
 });
+
+
+function DialogController($scope, $mdDialog, $window, $state, Groups) {
+
+  $scope.addGroup = function () {
+    Groups.createGroup({
+      name: $scope.groupName,
+      user: $window.localStorage.getItem('currentUser')
+    }).then(function (res) {
+      // $scope.getGroup(res);
+      console.log(res.data.id);
+      $mdDialog.cancel();
+      $state.transitionTo("group", {
+         id: res.data.id,
+         newgroup: true
+      });
+
+    });
+    $scope.groupName = "";
+  };
+
+  $scope.hide = function() {
+    $mdDialog.hide();
+  };
+
+  $scope.cancel = function() {
+    $mdDialog.cancel();
+  };
+
+  $scope.answer = function(answer) {
+    $scope.addGroup();
+  };
+}
