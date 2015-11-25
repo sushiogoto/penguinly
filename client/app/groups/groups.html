@@ -2,17 +2,18 @@
   <div ui-view="navbar"></div>
 
   <md-content>
-    <md-input-container class="md-icon-float md-block">
-      <form name="joinGroupInput" ng-submit='joinGroup()'>
-        <label>Join a group</label>
-        <input name="joinGroupName" ng-model="joinGroupName" type="text">
-      </form>
-    </md-input-container>
+
     <br>
 
     <div class="dialog-demo-content" layout="row" layout-wrap="" layout-margin="">
-      <md-button class="md-primary md-raised" ng-click="showAdvanced($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
+      <md-button class="md-primary md-raised" ng-click="showGroupCreate($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
         Create a Group
+      </md-button>
+    </div>
+
+    <div class="dialog-demo-content" layout="row" layout-wrap="" layout-margin="">
+      <md-button class="md-primary md-raised" ng-click="showGroupJoin($event)" flex-sm="100" flex-md="100" flex-gt-md="auto">
+        Join a Group
       </md-button>
     </div>
 
@@ -73,7 +74,7 @@
   </md-content>
 </div>
 
-<script type="text/ng-template" id="dialog1.tmpl.html">
+<script type="text/ng-template" id="creategroup.tmpl.html">
   <md-dialog aria-label="Create Group"  ng-cloak>
     <form>
       <md-toolbar>
@@ -104,4 +105,37 @@
     </form>
   </md-dialog>
 
-</script></div>
+</script>
+
+<script type="text/ng-template" id="joingroup.tmpl.html">
+  <md-dialog aria-label="Join Group"  ng-cloak>
+    <form>
+      <md-toolbar>
+        <div class="md-toolbar-tools">
+          <h2>Type your group name</h2>
+          <span flex></span>
+          <md-button class="md-icon-button" ng-click="cancel()">
+            <md-icon md-svg-src="img/icons/ic_close_24px.svg" aria-label="Close dialog"></md-icon>
+          </md-button>
+        </div>
+      </md-toolbar>
+
+      <md-input-container class="md-icon-float md-block">
+        <form name="joinGroupInput" ng-submit='joinGroup()'>
+          <label>Join a group</label>
+          <input name="joinGroupName" ng-model="joinGroupName" type="text">
+        </form>
+      </md-input-container>
+
+      <!-- <md-dialog-actions layout="row"> -->
+        <md-button ng-click="joinGroup()">
+          Join Group
+        </md-button>
+        <md-button ng-click="cancel()">
+         Cancel
+        </md-button>
+      <!-- </md-dialog-actions> -->
+    </form>
+  </md-dialog>
+
+</script>

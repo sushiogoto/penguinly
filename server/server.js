@@ -345,7 +345,7 @@ app.post('/groups/join', function (req, res, next) {
             user.set('group_id', group.id);
             user.save();
             // TODO!! Redirect to that group's page
-            res.sendStatus(201);
+            res.status(201).send(group.attributes);
           } else {
             // TODO!!! Change these to redirects to group page
             res.sendStatus(404);

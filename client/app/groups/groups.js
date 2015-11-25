@@ -4,27 +4,34 @@ angular.module('penguinly.groups', [])
 
   $scope.status = '  ';
 
-  $scope.showAdvanced = function(ev) {
+  $scope.showGroupCreate = function (ev) {
     $mdDialog.show({
       controller: DialogController,
-      templateUrl: 'dialog1.tmpl.html',
+      templateUrl: 'creategroup.tmpl.html',
       parent: angular.element(document.body),
       targetEvent: ev,
-      clickOutsideToClose:true
+      clickOutsideToClose: true
     })
-    .then(function(answer) {
+    .then(function (answer) {
       $scope.status = 'You said the information was "' + answer + '".';
-    }, function() {
+    }, function () {
       $scope.status = 'You cancelled the dialog.';
     });
   };
 
-  $scope.joinGroup = function () {
-    Groups.joinGroup({
-      name: $scope.joinGroupName,
-      user: $window.localStorage.getItem('currentUser')
+  $scope.showGroupJoin = function (ev) {
+    $mdDialog.show({
+      controller: DialogController,
+      templateUrl: 'joingroup.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+    .then(function (answer) {
+      $scope.status = 'You said the information was "' + answer + '".';
+    }, function () {
+      $scope.status = 'You cancelled the dialog.';
     });
-    $scope.joinGroupName = "";
   };
 
   $scope.signout = function () {
@@ -50,18 +57,33 @@ function DialogController($scope, $mdDialog, $window, $state, Groups) {
       });
 
     });
+    // TODO: need to move this inside? Or maybe not needed at all
     $scope.groupName = "";
   };
 
-  $scope.hide = function() {
+  $scope.joinGroup = function () {
+    Groups.joinGroup({
+      name: $scope.joinGroupName,
+      user: $window.localStorage.getItem('currentUser')
+    }).then(function (res) {
+      $mdDialog.cancel();
+      $state.transitionTo("group", {
+         id: res.data.id
+      });
+    });
+    // TODO: need to move this inside? Or maybe not needed at all
+    $scope.joinGroupName = "";
+  };
+
+  $scope.hide = function () {
     $mdDialog.hide();
   };
 
-  $scope.cancel = function() {
+  $scope.cancel = function () {
     $mdDialog.cancel();
   };
 
-  $scope.answer = function(answer) {
+  $scope.answer = function (answer) {
     $scope.addGroup();
   };
 }
