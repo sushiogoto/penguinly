@@ -1,6 +1,6 @@
 angular.module('penguinly.groupPage', [])
 
-  .controller('GroupPageCtrl', function ($scope, $state, $stateParams, $mdToast, $document, Groups, Activities) {
+  .controller('GroupPageCtrl', function ($scope, $state, $stateParams, $mdToast, $document, Groups, Activities, Auth) {
     $scope.data = {};
     $scope.groupId = $stateParams.id;
 
