@@ -145,7 +145,6 @@ angular.module('penguinly.services', [])
     $location.path('/signin');
   };
 
-
   return {
     signin: signin,
     signup: signup,
