@@ -1,13 +1,36 @@
 <div id='signin'>
-  <h1>signin</h1>
-  <form name="signinForm" ng-submit='signin()'>
-    <input type='text'ng-model='user.username'>
-    <input type="password" ng-model='user.password'>
-    <button>signin</button>
-  </form>
 
-  <div ng-show="errorBool">
-    {{ errorMessage }}
-  </div>
-  <a href="#/signup">Don't have an account? <strong>Signup</strong> ...</a>
+    <md-content class="md-padding" layout="row" layout-wrap="" layout-align="center start">
+        <div flex="50" layout="column">
+          <md-card>
+            <md-toolbar class="md-theme-light">
+                <h2 class="md-toolbar-tools">
+                  <span>Login</span>
+                </h2>
+              </md-toolbar>
+            <md-card-content>
+              <form name="signinForm" ng-submit='signin()'>
+                <md-input-container class="md-block">
+                  <label>Username</label>
+                  <input required="" name="username" ng-model="user.username">
+                </md-input-container>
+                <md-input-container class="md-block">
+                  <label>Password</label>
+                  <input type="password" required="" name="password" ng-model="user.password">
+                </md-input-container>
+                <md-button class="md-raised md-primary">Login</md-button>
+              </form>
+
+              <div ng-show="errorBool">
+                {{ errorMessage }}
+              </div>
+
+            </md-card-content>
+            <md-card-actions layout="row" layout-align="end center">
+              <md-button ui-sref="signup">Don't have an account? <strong>SIGNUP</strong></md-button>
+            </md-card-actions>
+          </md-card>
+        </div>
+      </md-content>
+
 </div>
