@@ -326,7 +326,7 @@ app.get('/api/group/:id', function (req, res, next) {
 //   });
 // })
 
-app.post('/groups/join', function (req, res, next) {
+app.put('/api/group/', function (req, res, next) {
   var groupName = req.body.name;
   var username = req.body.user;
 

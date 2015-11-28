@@ -14,8 +14,8 @@ angular.module('penguinly.services', [])
 
   var joinGroup = function (group) {
     return $http({
-      method: 'POST',
-      url: '/groups/join',
+      method: 'PUT',
+      url: '/api/group',
       data: group
     })
     .then(function (res) {
