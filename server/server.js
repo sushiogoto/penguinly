@@ -302,17 +302,19 @@ app.get('/api/users', function (req, res, next) {
 });
 
 
-app.get('/groups', function (req, res, next) {
+app.get('/api/group/:id', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
   //    // postComments should now be a collection where each is loaded with related user & post
   //    console.log(JSON.stringify(users));
   // });
 
-  var urlParts = url.parse(req.url, true);
-  var query = urlParts.query;
-  var groupId = query.id;
+  // var urlParts = url.parse(req.url, true);
+  // var query = urlParts.query;
+  // var groupId = query.id;
+  //
+  console.log('------------------------------------' + JSON.stringify(req.params));
 
-  new Group({ 'id': groupId })
+  new Group({ 'id': req.params.id })
     .fetch()
     .then(function (group) {
       if (group) {

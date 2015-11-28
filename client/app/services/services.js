@@ -26,7 +26,7 @@ angular.module('penguinly.services', [])
   var getGroup = function (group) {
     return $http({
       method: 'GET',
-      url: '/groups?id=' + group
+      url: '/api/group/' + group
     })
     .then(function (res) {
       return res.data;

@@ -128,7 +128,6 @@ angular.module('penguinly.groupPage', [])
     //       return results;
     //     }
 
-
     $scope.fetchActivities();
     $scope.init();
     $scope.getUsers($scope.groupId);
