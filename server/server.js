@@ -308,12 +308,6 @@ app.get('/api/group/:id', function (req, res, next) {
   //    console.log(JSON.stringify(users));
   // });
 
-  // var urlParts = url.parse(req.url, true);
-  // var query = urlParts.query;
-  // var groupId = query.id;
-  //
-  console.log('------------------------------------' + JSON.stringify(req.params));
-
   new Group({ 'id': req.params.id })
     .fetch()
     .then(function (group) {
@@ -372,7 +366,8 @@ app.post('/signin', function (req, res, next) {
             var token = jwt.encode(user, 'secret');
             res.json({
               token: token,
-              user: user.attributes.username
+              user: user.attributes.username,
+              id: user.attributes.id
             });
           } else {
             return next(new Error('No user'));
@@ -399,7 +394,8 @@ app.post('/signup', function (req, res, next) {
             var token = jwt.encode(user, 'secret');
             res.json({
               token: token,
-              user: newUser.attributes.username
+              user: newUser.attributes.username,
+              id: newUser.attributes.id
             });
           });
       } else {

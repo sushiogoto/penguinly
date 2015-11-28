@@ -12,6 +12,7 @@ angular.module('penguinly.auth', ['ngAnimate'])
       .then(function (data) {
         $window.localStorage.setItem('com.penguinly', data.token);
         $window.localStorage.setItem('currentUser', data.user);
+        $window.localStorage.setItem('currentUserId', data.id);
         $location.path('/groups');
       })
       .catch(function (error) {
@@ -24,7 +25,9 @@ angular.module('penguinly.auth', ['ngAnimate'])
   $scope.signup = function () {
     Auth.signup($scope.user)
       .then(function (data) {
+        $window.localStorage.setItem('com.penguinly', data.token);
         $window.localStorage.setItem('currentUser', data.user);
+        $window.localStorage.setItem('currentUserId', data.id);
         $location.path('/groups');
       })
       .catch(function (error) {

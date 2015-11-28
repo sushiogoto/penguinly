@@ -33,6 +33,16 @@ angular.module('penguinly.services', [])
     });
   };
 
+  var getGroups = function () {
+    return $http({
+      method: 'GET',
+      url: '/api/groups?userid=' + userId // get this from localStorage
+    })
+    .then(function (res) {
+      return res.data;
+    });
+  };
+
   var getUsers = function (groupId) {
     return $http({
       method: 'GET',

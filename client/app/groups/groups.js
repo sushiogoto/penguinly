@@ -75,6 +75,10 @@ function DialogController($scope, $mdDialog, $window, $state, Groups) {
     $scope.joinGroupName = "";
   };
 
+  $scope.getGroups = function () {
+    Groups.getGroups();
+  };
+
   $scope.hide = function () {
     $mdDialog.hide();
   };
