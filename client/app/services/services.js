@@ -94,12 +94,11 @@ angular.module('penguinly.services', [])
     });
   };
 
-  var addVote = function (username, activityId) {
+  var addVote = function (activityId) {
     return $http({
       method: 'PUT',
       url: '/api/activity',
       data: {
-        username: username,
         userId: $window.localStorage.getItem('currentUserId'),
         activityId: activityId
       }

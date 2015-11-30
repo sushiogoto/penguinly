@@ -13,10 +13,13 @@ angular.module('penguinly.activityPage', [])
     };
 
     // get all votes
+    $scope.getVotes = function () {
+      Activities.getVotes();
+    };
 
     // vote button
     $scope.sendVote = function () {
-      Activities.addVote($window.localStorage.getItem('currentUser'), $scope.activityId)
+      Activities.addVote($scope.activityId)
         .then(function (data) {
           $scope.data.votes = data.data;
         });

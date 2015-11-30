@@ -194,7 +194,6 @@ app.put('/api/activity', function (req, res, next) {
   //    // postComments should now be a collection where each is loaded with related user & post
   //    console.log(JSON.stringify(users));
   // });
-  var username = req.body.username;
   var userId = req.body.userId;
   var activityId = req.body.activityId;
 
