@@ -100,6 +100,7 @@ angular.module('penguinly.services', [])
       url: '/api/activity',
       data: {
         username: username,
+        userId: $window.localStorage.getItem('currentUserId'),
         activityId: activityId
       }
     })

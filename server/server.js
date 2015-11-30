@@ -195,8 +195,8 @@ app.put('/api/activity', function (req, res, next) {
   //    console.log(JSON.stringify(users));
   // });
   var username = req.body.username;
+  var userId = req.body.userId;
   var activityId = req.body.activityId;
-  console.log(activityId);
 
   ActivityUser
     .query('where', 'activity_id', '=', activityId)
@@ -206,53 +206,29 @@ app.put('/api/activity', function (req, res, next) {
       columns: ['voted', 'user_id'],
       debug: true
     }).then(function (activityUsers) {
-      new User({ 'username': username })
-        .fetch()
-        .then(function (user) {
-          var votes = 0;
-          console.log('===============================');
-          // console.log('MODELS' + Array.isArray(activityUsers["models"]));
+      var votes = 0;
 
-          (function (countdown) {
-            countdown = 0;
-            activityUsers.models.forEach(function (activityUser) {
-              if (activityUser.get('voted') === null) {
-                  // console.log(user.id);
-                if (activityUser.get('user_id') === user.id) {
-                  activityUser.set('voted', true);
-                  votes += 1;
-                  activityUser.save();
-                  }
-              } else {
-                votes += 1;
+      (function (countdown) {
+        countdown = 0;
+        activityUsers.models.forEach(function (activityUser) {
+          console.log('voted: ' + activityUser.get('voted'));
+          if (activityUser.get('voted') === null) {
+            // parseInt because userId is a string
+            if (activityUser.get('user_id') === parseInt(userId)) {
+              activityUser.set('voted', true);
+              votes += 1;
+              activityUser.save();
               }
-              // console.log(votes);
-              countdown += 1;
-              if (countdown === activityUsers.models.length) {
-                console.log(votes);
-                res.json(votes);
-              }
-            });
-          })();
-          // for(var key in activityUsers) {
-          //   (function(key) {
-          //   console.log(activityUsers[key]);
-          //   console.log('key: ' + key);
-          //   if (activityUsers[key].voted === null) {
-          //     if (activityUsers[key].user_id === user.id) {
-          //       activityUsers[key].set('voted', true);
-          //       votes += 1;
-          //       activityUsers[key].save();
-          //       }
-          //   } else {
-          //     votes += 1;
-          //   }
-          //   console.log(votes);
-          //   })(key);
-          // }
-          // activityUsers.forEach(function (activityUser) {
-          // });
+          } else {
+            votes += 1;
+          }
+          countdown += 1;
+          if (countdown === activityUsers.models.length) {
+            console.log(votes);
+            res.json(votes);
+          }
         });
+      })();
     }).catch(function (error) {
       console.error(error);
     });
