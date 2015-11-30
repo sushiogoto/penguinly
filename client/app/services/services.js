@@ -108,6 +108,15 @@ angular.module('penguinly.services', [])
     });
   };
 
+  // var getVotes = function () {
+  //   return $http({
+  //     method: 'GET',
+  //     url: '/api/activity',
+  //   }).then(function (res) {
+  //     return res;
+  //   });
+  // };
+
   return {
     addActivity: addActivity,
     getActivities: getActivities,

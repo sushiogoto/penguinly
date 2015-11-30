@@ -37,6 +37,7 @@ db.knex.schema.hasTable('activities').then(function (exists) {
       activity.increments('id').primary();
       activity.string('title', 30);
       activity.string('description', 255);
+      activity.integer('votes');
       activity.integer('group_id').references('groups.id');
       activity.dateTime('date_time');
     }).then(function (table) {

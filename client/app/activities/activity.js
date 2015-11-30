@@ -21,7 +21,7 @@ angular.module('penguinly.activityPage', [])
     $scope.sendVote = function () {
       Activities.addVote($scope.activityId)
         .then(function (data) {
-          $scope.data.votes = data.data;
+          $scope.data.activity.votes = data.data;
         });
     };
 

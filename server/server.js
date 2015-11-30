@@ -35,41 +35,6 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// app.get('/', function (req, res) {
-//   res.render('index');
-// });
-
-// app.get('/signin', function (req, res) {
-//   res.render('signin');
-// });
-
-
-// !!!!TODO use checkauth function below
-
-// var checkAuth = function (req, res, next) {
-//   // checking to see if the user is authenticated
-//   // grab the token in the header is any
-//   // then decode the token, which we end up being the user object
-//   // check to see if that user exists in the database
-//   var token = req.headers['x-access-token'];
-//   if (!token) {
-//     next(new Error('No token'));
-//   } else {
-//     var user = jwt.decode(token, 'secret');
-//     var findUser = Q.nbind(User.findOne, User);
-//     findUser({username: user.username})
-//       .then(function (foundUser) {
-//         if (foundUser) {
-//           res.send(200);
-//         } else {
-//           res.send(401);
-//         }
-//       })
-//       .fail(function (error) {
-//         next(error);
-//       });
-//   }
-// };
 app.post('/api/activities', function (req, res, next) {
   var newActivity = new Activity({
     'title': req.body.title,
@@ -83,6 +48,7 @@ app.post('/api/activities', function (req, res, next) {
     .then(function (activity) {
       helpers.getUsers(groupId)
              .then(function (model) {
+              // loop through all users who are part of group and create new activity user
               model.models[0].relations.users.forEach(function (user) {
                 console.log(user);
                 var newActivityUser = new ActivityUser({
@@ -98,66 +64,17 @@ app.post('/api/activities', function (req, res, next) {
                     console.log(error);
                   });
               });
-              // console.log('----------------------------------------123');
-              // console.log(model.models[0].relations.users);
-              // console.log('----------------------------------------1234');
-              // console.log(JSON.stringify(model.models[0].users));
-              // console.log('----------------------------------------12345');
-              // console.log(model.models[0].attributes);
-              // console.log('----------------------------------------123456');
-              // console.log(model.attributes);
-          // users.forEach(function (user) {
-            // var newActivityUser = new ActivityUser({
-            //   user_id: user.id,
-            //   activity_id: activity.id
-            // });
-
-            // newActivityUser.save()
-            //   .then(function (activityUser) {
-            //     console.log('new activityuser: ' + activityUser);
-            //   }).catch(function (error) {
-            //     console.log(error);
-            //   });
           });
-          // res.json(users);
         }).catch(function (error) {
           console.error(error);
         });
-      // loop through all users who are part of group and create new activity user
-
-
-      // ************TO DO REMEMBER TO SEND THE CORRECT RES!!!!
-    // res.json(activity);
 });
 
 app.get('/api/activities', function (req, res, next) {
-  // new User().query({where: {group_id: groupId}}).then(function(users) {
-  //    // postComments should now be a collection where each is loaded with related user & post
-  //    console.log(JSON.stringify(users));
-  // });
 
   var urlParts = url.parse(req.url, true);
   var query = urlParts.query;
   var groupId = query.group_id;
-
-  // ActivityUser
-  //   .query('where', 'group_id', '=', groupId)
-  //   .fetchAll({
-  //     withRelated: ['group'],
-  //     columns: ['id', 'title'],
-  //     debug: true
-  //   }).then(function (activities) {
-  //     res.json(activities);
-  //   }).catch(function (error) {
-  //     console.error(error);
-  //   });
-  //   // .then(function (group) {
-  //   //   if (group) {
-  //   //     res.json(group.attributes);
-  //   //   } else {
-  //   //     res.sendStatus(404);
-  //   //   }
-  //   // });
 
   Activity
     .query('where', 'group_id', '=', groupId)
@@ -173,10 +90,6 @@ app.get('/api/activities', function (req, res, next) {
 });
 
 app.get('/api/activity', function (req, res, next) {
-  // new User().query({where: {group_id: groupId}}).then(function(users) {
-  //    // postComments should now be a collection where each is loaded with related user & post
-  //    console.log(JSON.stringify(users));
-  // });
 
   var urlParts = url.parse(req.url, true);
   var query = urlParts.query;
@@ -190,10 +103,7 @@ app.get('/api/activity', function (req, res, next) {
 });
 
 app.put('/api/activity', function (req, res, next) {
-  // new User().query({where: {group_id: groupId}}).then(function(users) {
-  //    // postComments should now be a collection where each is loaded with related user & post
-  //    console.log(JSON.stringify(users));
-  // });
+
   var userId = req.body.userId;
   var activityId = req.body.activityId;
 
@@ -210,20 +120,31 @@ app.put('/api/activity', function (req, res, next) {
       (function (countdown) {
         countdown = 0;
         activityUsers.models.forEach(function (activityUser) {
+          console.log('uuuuuusseeeeeeeers: ' + JSON.stringify(activityUsers.models));
           console.log('voted: ' + activityUser.get('voted'));
+          // TODO: SAVING INCORRECTLY - this code recreates a line...
           if (activityUser.get('voted') === null) {
             // parseInt because userId is a string
             if (activityUser.get('user_id') === parseInt(userId)) {
-              activityUser.set('voted', true);
+              activityUser.set({
+                voted: true,
+                id: userId
+            });
               votes += 1;
               activityUser.save();
               }
           } else {
+            console.log('voooooottiinnnnng braahhhhhh');
             votes += 1;
           }
           countdown += 1;
           if (countdown === activityUsers.models.length) {
-            console.log(votes);
+            new Activity({ 'id': activityId })
+                        .fetch()
+                        .then(function (activity) {
+                          activity.set('votes', votes);
+                          activity.save();
+                        });
             res.json(votes);
           }
         });
@@ -231,13 +152,6 @@ app.put('/api/activity', function (req, res, next) {
     }).catch(function (error) {
       console.error(error);
     });
-    // .then(function (group) {
-    //   if (group) {
-    //     res.json(group.attributes);
-    //   } else {
-    //     res.sendStatus(404);
-    //   }
-    // });
 });
 
 app.post('/groups', function (req, res, next) {
@@ -296,18 +210,7 @@ app.get('/api/users', function (req, res, next) {
          .then(function (model) {
             res.json(model);
          });
-  // UserGroup
-  //   .query('where', 'group_id', '=', groupId)
-  //   .fetchAll({
-  //     columns: ['user_id'],
-  //     debug: true
-  //   }).then(function (userGroups) {
 
-  //     console.log(JSON.stringify(userGroups));
-  //     res.json(userGroups);
-  //   }).catch(function (error) {
-  //     console.error(error);
-  //   });
 });
 
 // TODO: add this route after changing usergroups to be many to many relationship
@@ -317,10 +220,6 @@ app.get('/api/users', function (req, res, next) {
 // });
 
 app.get('/api/group/:id', function (req, res, next) {
-  // new User().query({where: {group_id: groupId}}).then(function(users) {
-  //    // postComments should now be a collection where each is loaded with related user & post
-  //    console.log(JSON.stringify(users));
-  // });
 
   new Group({ 'id': req.params.id })
     .fetch()
@@ -332,13 +231,6 @@ app.get('/api/group/:id', function (req, res, next) {
       }
     });
 });
-
-// app.get('/groups/users', function (req, res, next) {
-//   new Groups().fetch({withRelated: ['user', 'post']}).then(function(postComments) {
-//      // postComments should now be a collection where each is loaded with related user & post
-//      console.log(JSON.stringify(postComments));
-//   });
-// })
 
 app.put('/api/group/', function (req, res, next) {
   var groupName = req.body.name;
