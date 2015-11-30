@@ -49,7 +49,7 @@ angular.module('penguinly.services', [])
       url: '/api/users?id=' + groupId
     })
     .then(function (res) {
-      return res.data;
+      return res.data[0].users;
     });
   };
 

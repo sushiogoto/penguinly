@@ -8,6 +8,7 @@ var session = require('express-session');
 
 var Users = require('./collections/users');
 var User = require('./models/user');
+var UserGroup = require('./models/usergroup');
 
 var Activity = require('./models/activity');
 var ActivityUser = require('./models/activityuser');
@@ -76,30 +77,49 @@ app.post('/api/activities', function (req, res, next) {
     'description': req.body.description,
     'group_id': req.body.group_id
   });
+  var groupId = req.body.group_id;
 
   newActivity.save()
     .then(function (activity) {
-      User
-        .query('where', 'group_id', '=', req.body.group_id)
-        .fetchAll({
-          withRelated: ['group'],
-          columns: ['id', 'username'],
-          debug: true
-        }).then(function (users) {
-          users.forEach(function (user) {
-            var newActivityUser = new ActivityUser({
-              user_id: user.id,
-              activity_id: activity.id
-            });
+      helpers.getUsers(groupId)
+             .then(function(model) {
+              model.models[0].relations.users.forEach(function (user) {
+                console.log(user);
+                var newActivityUser = new ActivityUser({
+                  user_id: user.id,
+                  activity_id: activity.id
+                });
 
-            newActivityUser.save()
-              .then(function (activityUser) {
-                console.log('new activityuser: ' + activityUser);
-              }).catch(function (error) {
-                console.log(error);
+                newActivityUser.save()
+                  .then(function (activityUser) {
+                    res.sendStatus(201);
+                    console.log('new activityuser: ' + JSON.stringify(activityUser));
+                  }).catch(function (error) {
+                    console.log(error);
+                  });
               });
+              // console.log('----------------------------------------123');
+              // console.log(model.models[0].relations.users);
+              // console.log('----------------------------------------1234');
+              // console.log(JSON.stringify(model.models[0].users));
+              // console.log('----------------------------------------12345');
+              // console.log(model.models[0].attributes);
+              // console.log('----------------------------------------123456');
+              // console.log(model.attributes);
+          // users.forEach(function (user) {
+            // var newActivityUser = new ActivityUser({
+            //   user_id: user.id,
+            //   activity_id: activity.id
+            // });
+
+            // newActivityUser.save()
+            //   .then(function (activityUser) {
+            //     console.log('new activityuser: ' + activityUser);
+            //   }).catch(function (error) {
+            //     console.log(error);
+            //   });
           });
-          res.json(users);
+          // res.json(users);
         }).catch(function (error) {
           console.error(error);
         });
@@ -108,7 +128,6 @@ app.post('/api/activities', function (req, res, next) {
 
       // ************TO DO REMEMBER TO SEND THE CORRECT RES!!!!
     // res.json(activity);
-  });
 });
 
 app.get('/api/activities', function (req, res, next) {
@@ -263,10 +282,18 @@ app.post('/groups', function (req, res, next) {
             });
             newGroup.save()
               .then(function (newGroup) {
-                if (user.get('group_id') === null) {
-                  user.set('group_id', newGroup.id);
-                  user.save();
-                }
+                var newUserGroup = new UserGroup({
+                  user_id: user.id,
+                  group_id: newGroup.id
+                });
+
+                newUserGroup.save()
+                  .then(function (userGroup) {
+                    console.log('new userGroup: ' + userGroup);
+                  }).catch(function (error) {
+                    console.log(error);
+                  });
+
                 // TODO!! Redirect to that group's page
                 // res.sendStatus(201);
                 res.json({
@@ -288,19 +315,31 @@ app.get('/api/users', function (req, res, next) {
   var query = urlParts.query;
   var groupId = query.id;
 
-  User
-    .query('where', 'group_id', '=', groupId)
-    .fetchAll({
-      withRelated: ['group'],
-      columns: ['id', 'username'],
-      debug: true
-    }).then(function (users) {
-      res.json(users);
-    }).catch(function (error) {
-      console.error(error);
-    });
+  console.log('-------------------------------' + groupId);
+
+  helpers.getUsers(groupId)
+         .then(function(model) {
+            res.json(model);
+         });
+  // UserGroup
+  //   .query('where', 'group_id', '=', groupId)
+  //   .fetchAll({
+  //     columns: ['user_id'],
+  //     debug: true
+  //   }).then(function (userGroups) {
+
+  //     console.log(JSON.stringify(userGroups));
+  //     res.json(userGroups);
+  //   }).catch(function (error) {
+  //     console.error(error);
+  //   });
 });
 
+// TODO: add this route after changing usergroups to be many to many relationship
+
+// app.get('/api/groups', function (req, res, next) {
+//   new Group({ ''})
+// });
 
 app.get('/api/group/:id', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
@@ -338,8 +377,17 @@ app.put('/api/group/', function (req, res, next) {
         .fetch()
         .then(function (group) {
           if (group) {
-            user.set('group_id', group.id);
-            user.save();
+            var newUserGroup = new UserGroup({
+              user_id: user.id,
+              group_id: group.id
+            });
+
+            newUserGroup.save()
+              .then(function (userGroup) {
+                console.log('new userGroup: ' + userGroup);
+              }).catch(function (error) {
+                console.log(error);
+              });
             // TODO!! Redirect to that group's page
             res.status(201).send(group.attributes);
           } else {

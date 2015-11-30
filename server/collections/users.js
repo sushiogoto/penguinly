@@ -5,4 +5,4 @@ var Users = new db.Collection();
 
 Users.model = User;
 
-module.exports = Users;
+module.exports = db.collection('Users', Users);

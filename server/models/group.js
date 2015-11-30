@@ -2,18 +2,18 @@ var db = require('../config');
 var Activity = require('./activity');
 var ActivityUser = require('./activityuser');
 var User = require('./user');
+var UserGroup = require('./usergroup');
 
-var Group = db.Model.extend({
+module.exports = db.model('Group', {
 
   tableName: 'groups',
 
   users: function () {
-    return this.hasMany(User);
+    return this.belongsToMany('User')
+               .through(UserGroup);
   },
 
   activites: function () {
-    return this.hasMany(Activity);
+    return this.hasMany('Activity');
   }
 });
-
-module.exports = Group;

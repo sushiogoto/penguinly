@@ -3,20 +3,22 @@ var bcrypt = require('bcrypt-nodejs');
 var Promise = require('bluebird');
 var Activity = require('./activity');
 var ActivityUser = require('./activityuser');
+var UserGroup = require('./usergroup');
 var Group = require('./group');
 
-var User = db.Model.extend({
+module.exports = db.model('User', {
 
   tableName: 'users',
 
 // !TODO: NEED TO REQUIRE THESE MODELS
   activities: function () {
-    return this.belongsToMany(Activity)
-               .through(ActivityUser)
+    return this.belongsToMany('Activity')
+               .through('ActivityUser')
                .withPivot(['voted']);
   },
-  group: function () {
-    return this.belongsTo(Group);
+  groups: function () {
+    return this.belongsToMany('Group')
+               .through('UserGroup');
   },
   initialize: function () {
     this.on('creating', this.hashPassword);
@@ -34,5 +36,3 @@ var User = db.Model.extend({
       });
   }
 });
-
-module.exports = User;

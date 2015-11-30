@@ -3,7 +3,7 @@ var ActivityUser = require('./activityuser');
 var Group = require('./group');
 var User = require('./user');
 
-var Activity = db.Model.extend({
+module.exports = db.model('Activity', {
 
   tableName: 'activities',
 
@@ -16,5 +16,3 @@ var Activity = db.Model.extend({
     return this.belongsTo(Group);
   }
 });
-
-module.exports = Activity;

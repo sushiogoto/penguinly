@@ -1,4 +1,10 @@
 var jwt = require('jwt-simple');
+var db = require('../config');
+var Activity = require('../models/activity');
+var ActivityUser = require('../models/activityuser');
+var User = require('../models/user');
+var UserGroup = require('../models/usergroup');
+var Group = require('../models/group');
 
 module.exports = {
   errorLogger: function (error, req, res, next) {
@@ -32,5 +38,21 @@ module.exports = {
       return next(error);
     }
 
+  },
+  // helpers.js
+  getUsers: function(groupId) {
+    // return a certain Participant
+    return new Group()
+      // with a given participantId
+      .query({where: {id: groupId}})
+      // get the related event data
+      // require: true will throw an error if the query fails
+      .fetchAll({
+        withRelated: ['users'],
+        require: true,
+        debug: true
+      }).then(function(model) {
+        return model;
+      });
   }
 };

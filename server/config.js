@@ -15,6 +15,7 @@ var knex = require('knex')({
 });
 
 var db = require('bookshelf')(knex);
+db.plugin('registry');
 
 db.knex.schema.hasTable('users').then(function (exists) {
   if (!exists) {
@@ -22,7 +23,6 @@ db.knex.schema.hasTable('users').then(function (exists) {
       user.increments('id').primary();
       user.string('username', 255);
       user.string('password', 255);
-      user.integer('group_id').references('groups.id');
       user.timestamps();
     }).then(function (table) {
       console.log('Created User Table', table);
@@ -30,18 +30,6 @@ db.knex.schema.hasTable('users').then(function (exists) {
   }
 });
 
-db.knex.schema.hasTable('activityusers').then(function (exists) {
-  if (!exists) {
-    db.knex.schema.createTable('activityusers', function (activityuser) {
-      activityuser.increments('id').primary();
-      activityuser.boolean('voted');
-      activityuser.integer('user_id').references('users.id');
-      activityuser.integer('activity_id').references('activities.id');
-    }).then(function (table) {
-      console.log('Created ActivityUser Table', table);
-    });
-  }
-});
 
 db.knex.schema.hasTable('activities').then(function (exists) {
   if (!exists) {
@@ -64,6 +52,31 @@ db.knex.schema.hasTable('groups').then(function (exists) {
       group.string('name', 255);
     }).then(function (table) {
       console.log('Created Group Table', table);
+    });
+  }
+});
+
+db.knex.schema.hasTable('activityusers').then(function (exists) {
+  if (!exists) {
+    db.knex.schema.createTable('activityusers', function (activityuser) {
+      activityuser.increments('id').primary();
+      activityuser.boolean('voted');
+      activityuser.integer('user_id').references('users.id');
+      activityuser.integer('activity_id').references('activities.id');
+    }).then(function (table) {
+      console.log('Created ActivityUser Table', table);
+    });
+  }
+});
+
+db.knex.schema.hasTable('usergroups').then(function (exists) {
+  if (!exists) {
+    db.knex.schema.createTable('usergroups', function (usergroup) {
+      usergroup.increments('id').primary();
+      usergroup.integer('user_id').references('users.id');
+      usergroup.integer('group_id').references('groups.id');
+    }).then(function (table) {
+      console.log('Created UserGroup Table', table);
     });
   }
 });

@@ -5,4 +5,4 @@ var Activities = new db.Collection();
 
 Activities.model = Activity;
 
-module.exports = Activities;
+module.exports = db.collection('Activities', Activities);
