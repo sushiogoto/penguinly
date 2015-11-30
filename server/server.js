@@ -142,7 +142,10 @@ app.put('/api/activity', function (req, res, next) {
             new Activity({ 'id': activityId })
                         .fetch()
                         .then(function (activity) {
-                          activity.set('votes', votes);
+                          activity.set({
+                            votes: votes,
+                            id: activityId
+                          });
                           activity.save();
                         });
             res.json(votes);
