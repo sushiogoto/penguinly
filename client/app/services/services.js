@@ -96,7 +96,7 @@ angular.module('penguinly.services', [])
 
   var addVote = function (username, activityId) {
     return $http({
-      method: 'POST',
+      method: 'PUT',
       url: '/api/activity',
       data: {
         username: username,

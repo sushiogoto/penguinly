@@ -82,7 +82,7 @@ app.post('/api/activities', function (req, res, next) {
   newActivity.save()
     .then(function (activity) {
       helpers.getUsers(groupId)
-             .then(function(model) {
+             .then(function (model) {
               model.models[0].relations.users.forEach(function (user) {
                 console.log(user);
                 var newActivityUser = new ActivityUser({
@@ -189,7 +189,7 @@ app.get('/api/activity', function (req, res, next) {
     });
 });
 
-app.post('/api/activity', function (req, res, next) {
+app.put('/api/activity', function (req, res, next) {
   // new User().query({where: {group_id: groupId}}).then(function(users) {
   //    // postComments should now be a collection where each is loaded with related user & post
   //    console.log(JSON.stringify(users));
@@ -318,7 +318,7 @@ app.get('/api/users', function (req, res, next) {
   console.log('-------------------------------' + groupId);
 
   helpers.getUsers(groupId)
-         .then(function(model) {
+         .then(function (model) {
             res.json(model);
          });
   // UserGroup

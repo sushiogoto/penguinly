@@ -40,7 +40,7 @@ module.exports = {
 
   },
   // helpers.js
-  getUsers: function(groupId) {
+  getUsers: function (groupId) {
     // return a certain Participant
     return new Group()
       // with a given participantId
@@ -51,7 +51,7 @@ module.exports = {
         withRelated: ['users'],
         require: true,
         debug: true
-      }).then(function(model) {
+      }).then(function (model) {
         return model;
       });
   }
